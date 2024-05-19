@@ -1,0 +1,74 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+p{
+  font-size: 25px;
+}
+
+.parent{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.card-wrapper{
+  border: 1px #afafaf solid;
+  border-radius: 25px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.items-container{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.items{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.items > p{
+  font-size: 18px;
+  color: #525960;
+}
+
+/* Default styles for all devices */
+.some-element {
+  color: black;
+}
+
+/* Media query for devices with a maximum width of 768px (typical for tablets and mobile devices) */
+@media only screen and (max-width: 768px) {
+  /* Styles specific to smaller devices */
+  .parent{
+    width: 100%;
+  }
+
+  .card-wrapper{
+    margin: 30px;
+  }
+}
