@@ -5,11 +5,12 @@ import axios from 'axios';
 
 function App() {
 
-  const [ postCount,setPostCount ] = useState(0)
   const [ channels,setChannels ] = useState<any>([])
   const [ teams,setTeams ] = useState<any>([])
   const [ loader,setLoader ] = useState<boolean>(true)
 
+  let  postCount = 0
+  clctTtlPstCount()
   const baseUrl = "http://68.183.88.126:8065";
   const token = "7sacw7gn7b8xfx3wyeokrwqtfc";
   const userId = "kggwskrnatg48pusqf95sugatr";
@@ -34,35 +35,41 @@ function App() {
       return response.data.posts;
   }
 
-  async function countUserPosts(userId: string) {
-    const teams = await getUserTeams(userId);
-    let userPostsCount = 0;
+  async function countUserPosts() {
     let channelsArr = []
-    setTeams(teams)
     for (const team of teams) {
-        const channels = await getUserChannels(userId, team.id);
-        channelsArr = channels
-        for (const channel of channels) {
-            const posts = await getChannelPosts(channel.id);
-            console.log(posts,'posts');
-            
-            const userPosts = Object.values(posts).filter((post: any) => post.user_id === userId && post.type != 'system_join_team');
-            userPostsCount += userPosts.length;
-        }
+      const channels = await getUserChannels(userId, team.id);
+      for (const chnl of channels) {
+        const posts = await getChannelPosts(chnl.id);
+        const psts = Object.values(posts).filter((post: any) => post.user_id === userId && !['system_join_channel','system_join_team'].includes(post.type));
+        chnl.postCount = psts?.length || 0
+        channelsArr.push(chnl)
+      }
     }
     setChannels(channelsArr)
-    return userPostsCount - 1;
+  }
+
+  function clctTtlPstCount(){
+    if(channels?.length){
+      for(let ch of channels){
+        postCount += ch.postCount
+      }
+      loader && setLoader(false)
+    }
   }
 
 
   useEffect(() => {
-    countUserPosts(userId).then(count => {
-      setPostCount(count)
-      setLoader(false)
-    }).catch(error => {
-      console.log(error);
-    });
+    countUserPosts()
+  }, [teams])
+
+  useEffect(() => {
+    async function getTeams(){
+      const teams = await getUserTeams(userId);
+      setTeams(teams)
+    }
     
+    getTeams()
   }, [])
   
 
@@ -76,17 +83,17 @@ function App() {
             <p>Hello Mattermost User,</p>
             <div className="items-container">
               <p>teams</p>
-              {teams.map((t: any) => (
-                <div className="items">
+              {teams.map((t: any,i: number) => (
+                <div className="items" key={i}>
                   <p>{t.display_name}</p>
                 </div>
               ))}
             </div>
             <div className="items-container">
               <p>Channels</p>
-              {channels.map((c: any) => (
-                <div className="items">
-                  <p>{c.display_name}</p>
+              {channels.map((c: any,i: number) => (
+                <div className="items" key={i}>
+                  <p>{c.display_name}<span>{c.postCount} posts</span></p>
                 </div>
               ))}
             </div>

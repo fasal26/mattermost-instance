@@ -54,6 +54,8 @@ p{
 .items > p{
   font-size: 18px;
   color: #525960;
+  display: flex;
+  justify-content: space-between;
 }
 
 /* Default styles for all devices */
