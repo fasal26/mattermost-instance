@@ -63,6 +63,30 @@ p{
   color: black;
 }
 
+.green{
+  background-color: #77b377;
+  color: white;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 1fr 0.4fr;
+  /* grid-template-rows: repeat(4, 1fr); */
+  width: 800px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 10px;
+  font-size: 1.2em;
+  border: 1px solid #ebeaea;
+}
+
+
 /* Media query for devices with a maximum width of 768px (typical for tablets and mobile devices) */
 @media only screen and (max-width: 768px) {
   /* Styles specific to smaller devices */
